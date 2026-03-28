@@ -7,5 +7,12 @@ namespace ETicketingSystem.UnitTest
         {
             Assert.True(true);
         }
+
+        //Todo
+        //Test concurrecy case
+        //Test double entyr bookkeeping
+        //Test jounal entry balance check
+        //QRCode delay test
+
     }
 }
