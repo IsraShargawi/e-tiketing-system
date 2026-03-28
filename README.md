@@ -375,7 +375,7 @@ dotnet ef database update
 dotnet run
 
 # After API starts, visit http://localhost:5000/swagger
-# Run POST /api/database/seed to initialize data
+# Run GET /api/database/migrate-and-seed to initialize data
 ```
 
 #### Frontend (React)
