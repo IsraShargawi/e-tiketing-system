@@ -1,0 +1,26 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy csproj and restore dependencies
+COPY ETicketingSystem/ETicketingSystem.csproj ETicketingSystem/
+RUN dotnet restore "ETicketingSystem/ETicketingSystem.csproj"
+
+# Copy everything else and build
+COPY ETicketingSystem/ ETicketingSystem/
+WORKDIR "/src/ETicketingSystem"
+RUN dotnet build "ETicketingSystem.csproj" -c Release -o /app/build
+
+# Publish
+FROM build AS publish
+RUN dotnet publish "ETicketingSystem.csproj" -c Release -o /app/publish
+
+# Final stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+
+# Install EF Core tools for migrations
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+EXPOSE 80
+ENTRYPOINT ["dotnet", "ETicketingSystem.dll"]

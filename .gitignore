@@ -1,0 +1,91 @@
+## Build files
+**/bin/
+**/obj/
+**/out/
+
+## User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+## Visual Studio files
+.vs/
+*.vsidx
+*.vssscc
+
+## ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+## Database
+*.mdf
+*.ldf
+*.sdf
+*.db
+*.db-shm
+*.db-wal
+
+## Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnp.*
+.yarn/
+
+## React
+/frontend/build/
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+## Docker
+.dockerignore
+
+## IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## Migrations (optional - uncomment if you want to ignore)
+# **/Migrations/
+
+## Logs
+*.log
+
+## Environment files
+.env
+.env.local

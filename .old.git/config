@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "e-ticking-system"]
+	url = https://github.com/Rah-tour/e-ticking-system.git
+	fetch = +refs/heads/*:refs/remotes/e-ticking-system/*

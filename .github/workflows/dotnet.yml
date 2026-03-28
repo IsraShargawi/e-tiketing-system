@@ -1,0 +1,38 @@
+name: .NET CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore ETicketingSystem/ETicketingSystem.csproj
+      
+    - name: Build
+      run: dotnet build ETicketingSystem/ETicketingSystem.csproj --configuration Release --no-restore
+      
+    - name: Run tests
+      run: dotnet test ETicketingSystem/ETicketingSystem.csproj --no-build --verbosity normal --configuration Release
+      
+    - name: Publish
+      run: dotnet publish ETicketingSystem/ETicketingSystem.csproj --configuration Release --output ./publish
+      
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: eticketing-api
+        path: ./publish
