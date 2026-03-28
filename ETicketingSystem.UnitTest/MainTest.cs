@@ -20,12 +20,6 @@ namespace ETicketingSystem.UnitTest
             return context;
         }
 
-        [Fact]
-        public void Test1()
-        {
-            Assert.True(true);
-        }
-
         //Todo
         //Test concurrecy case
         [Fact]
@@ -34,7 +28,7 @@ namespace ETicketingSystem.UnitTest
             var context = GetDbContext();
             var ticketService = new TicketService(context);
 
-            // Create ticket with only 2 tickets available
+            // Create ticket with 2 tickets
             var ticket = new ETicketingSystem.Ticket.Entities.Ticket
             {
                 Code = "TCK999",
