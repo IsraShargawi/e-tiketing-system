@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="ETicketingSystem.UnitTest/ETicketingSystem.UnitTest.csproj" Id="f39b1645-58ba-415e-aa28-e8a65506570c" />
   <Project Path="ETicketingSystem/ETicketingSystem.csproj" />
 </Solution>
