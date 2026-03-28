@@ -2,9 +2,9 @@ name: .NET CI/CD
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
 
 jobs:
   build-and-test:
@@ -20,13 +20,13 @@ jobs:
         dotnet-version: '8.0.x'
         
     - name: Restore dependencies
-      run: dotnet restore ETicketingSystem/ETicketingSystem.csproj
+      run: dotnet restore ETicketingSystem.slnx
       
     - name: Build
-      run: dotnet build ETicketingSystem/ETicketingSystem.csproj --configuration Release --no-restore
+      run: dotnet build ETicketingSystem.slnx --configuration Release --no-restore
       
     - name: Run tests
-      run: dotnet test ETicketingSystem/ETicketingSystem.csproj --no-build --verbosity normal --configuration Release
+      run: dotnet test ETicketingSystem.UnitTest/ETicketingSystem.UnitTest.csproj --no-build --verbosity normal --configuration Release
       
     - name: Publish
       run: dotnet publish ETicketingSystem/ETicketingSystem.csproj --configuration Release --output ./publish
