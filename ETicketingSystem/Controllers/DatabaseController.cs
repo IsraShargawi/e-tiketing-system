@@ -24,21 +24,10 @@ public class DatabaseController : ControllerBase
         {
             _logger.LogInformation("Starting fresh database migration...");
 
-            var canConnect = await _context.Database.CanConnectAsync();
-            if (!canConnect)
-            {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Cannot connect to database server",
-                    error = "Please ensure SQL Server is running"
-                });
-            }
-
             // Step 1: Drop the database if it exists (clean slate)
             _logger.LogInformation("Dropping existing database if it exists...");
             await _context.Database.EnsureDeletedAsync();
-            _logger.LogInformation("Database dropped successfully");
+            _logger.LogInformation("Database dropped successfully (or didn't exist)");
 
             // Step 2: Apply all migrations from scratch
             _logger.LogInformation("Applying all migrations...");
