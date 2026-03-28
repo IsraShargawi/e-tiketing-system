@@ -2,20 +2,6 @@
 
 A robust backend-focused e-ticketing system demonstrating **financial integrity**, **concurrency handling**, and **clean .NET Core architecture** with a **double-entry ledger system**.
 
-## 📋 Table of Contents
-
-- [Business Context](#business-context)
-- [Technical Architecture](#technical-architecture)
-- [Database Design (ERD)](#database-design-erd)
-- [Key Features](#key-features)
-- [Double-Entry Ledger Logic](#double-entry-ledger-logic)
-- [Concurrency Handling](#concurrency-handling)
-- [Setup Instructions](#setup-instructions)
-- [API Documentation](#api-documentation)
-- [Testing](#testing)
-
----
-
 ## 🎯 Business Context
 
 An E-Ticketing & Payment Simulation Platform with three ticket types:
@@ -364,6 +350,11 @@ docker-compose up --build
 - **API**: http://localhost:5000
 - **Swagger**: http://localhost:5000/swagger
 
+**Important - Initialize Database:**
+1. Open Swagger at http://localhost:5000/swagger
+2. Find the `GET /api/database/migrate-and-seed` endpoint
+3. Click "Try it out" → "Execute" to seed initial data (tickets, accounts, users)
+
 ### Local Development Setup
 
 #### Backend (.NET API)
@@ -382,6 +373,9 @@ dotnet ef database update
 
 # Run the API
 dotnet run
+
+# After API starts, visit http://localhost:5000/swagger
+# Run POST /api/database/seed to initialize data
 ```
 
 #### Frontend (React)
@@ -400,7 +394,43 @@ npm start
 
 ---
 
-## 📚 API Documentation
+## � Troubleshooting
+
+### Database Connection Issues
+
+**Error**: `Cannot connect to database server`
+
+**Solutions:**
+
+1. **Using Docker Compose (Recommended)**
+   - Make sure Docker Desktop is running
+   - Run: `docker-compose down -v` (clean volumes)
+   - Run: `docker-compose up --build`
+   - Wait 2-3 minutes for SQL Server to fully start
+
+2. **Using Local SQL Server**
+   - Verify SQL Server is running on `localhost:1433`
+   - Check connection string in `appsettings.Development.json`
+   - Default connection string:
+     ```json
+     "Server=localhost,1433;Database=ETicketingDB;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;"
+     ```
+   - Update password if needed
+   - Ensure SQL Server accepts TCP/IP connections
+
+3. **Check if database exists**
+   - Run: `dotnet ef database update` to apply migrations
+   - Or visit Swagger: `GET /api/database/migrate-and-seed`
+
+### Port Already in Use
+
+If port 5000 or 3000 is already taken:
+- Stop other applications using these ports
+- Or modify ports in `docker-compose.yml`
+
+---
+
+## �📚 API Documentation
 
 ### Tickets Endpoints
 
@@ -524,6 +554,29 @@ Validate that the ledger is balanced.
 
 ## 🧪 Testing
 
+### Unit Tests
+
+The project includes unit tests covering critical business logic. Run them with:
+
+```bash
+dotnet test ETicketingSystem.UnitTest/ETicketingSystem.UnitTest.csproj
+```
+
+**Test Coverage:**
+
+1. **Ticket Concurrency Tests**
+   - `ConcurrentBooking_TwoUsersForLastTickets_OnlyShouldSucceed` - Tests race condition when 2 users try booking the same last tickets simultaneously. Only one should succeed.
+
+2. **Double-Entry Bookkeeping Tests**
+   - `RecordPayment_ShouldCreateDoubleEntry` - Verifies that payment creates both debit and credit journal entries
+   - `ValidateLedgerBalance_ShouldBeBalanced` - Ensures total debits equal total credits
+
+3. **Payment Handler Tests**
+   - `QRScan_ShouldTakeAtLeast8Seconds` - Confirms QR payment has 8 second delay
+   - `CreditCardHandler_ShouldBeInstant` - Verifies credit card processes instantly
+
+**Note**: Tests use in-memory database so they run fast without needing SQL Server.
+
 ### Manual Testing Flow
 
 1. **Open Frontend**: http://localhost:3000
@@ -593,7 +646,7 @@ ETicketingSystem/
 ### ✅ Code Quality
 - [x] Dependency Injection configured properly
 - [x] Repository pattern (via EF Core DbContext)
-- [x] Clean separation of concerns (Modular Monolith)
+- [x] Clean folder structure by feature
 - [x] Meaningful variable/method names
 - [x] SOLID principles applied
 
@@ -620,11 +673,11 @@ ETicketingSystem/
 
 ## 📝 Design Decisions
 
-### Why Modular Monolith?
-- **Simplicity**: Easier to develop and deploy than microservices
-- **Performance**: No network latency between modules
-- **Transactions**: ACID guarantees across modules
-- **Migration Path**: Can be split into microservices later if needed
+### Why Organized Folder Structure?
+- **Simple Organization**: Code grouped by feature (Accounting, Payment, Ticket) for clarity
+- **Single Project**: Everything in one ASP.NET Core project - no complex module boundaries
+- **Easy to Navigate**: Related entities and services stay together
+- **Good for Small Teams**: No need for full modular monolith or microservices at this scale
 
 ### Why Optimistic Concurrency Over Pessimistic Locking?
 - **Scalability**: No lock contention under normal load
@@ -640,33 +693,13 @@ ETicketingSystem/
 
 ## 🚧 Future Enhancements
 
-- [ ] Unit tests for ledger logic (xUnit + Moq)
-- [ ] Integration tests with TestContainers
+- [x] Unit tests for core business logic (xUnit)
+- [ ] More comprehensive test coverage (mocking, edge cases)
 - [ ] Redis caching for ticket availability
 - [ ] Background job for QR payment processing (Hangfire)
-- [ ] Authentication & Authorization (JWT)
-- [ ] Event sourcing for audit trail
-- [ ] Real-time ticket updates (SignalR)
+- [ ] Authentication & Authorization - JWT shoutcut using Keycloak
+- [ ] Deploy to Azure/AWS with proper CI/CD
 
 ---
 
-## 👤 Author
 
-**Technical Assessment Submission**  
-Role: Backend / .NET Developer  
-Date: March 28, 2026
-
----
-
-## 📄 License
-
-This is a technical assessment project for demonstration purposes.
-
----
-
-## 🙏 Acknowledgments
-
-- ASP.NET Core Team for excellent documentation
-- Entity Framework Core for robust ORM
-- Docker for containerization simplicity
-- React community for frontend resources

@@ -17,7 +17,7 @@ public class DatabaseController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("migrate")]
+    [HttpGet("migrate-and-seed")]
     public async Task<IActionResult> MigrateDatabase()
     {
         try
