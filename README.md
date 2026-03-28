@@ -350,6 +350,12 @@ docker-compose up --build
 - **API**: http://localhost:5000
 - **Swagger**: http://localhost:5000/swagger
 
+**Application Screenshot:**
+
+![E-Ticketing System Frontend](docs/screenshots/screen.png)
+
+The frontend displays all three ticket types with real-time availability, shopping cart functionality, and a clean, responsive design.
+
 **Important - Initialize Database:**
 1. Open Swagger at http://localhost:5000/swagger
 2. Find the `GET /api/database/migrate-and-seed` endpoint
